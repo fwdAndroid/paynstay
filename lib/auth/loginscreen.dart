@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:paynstay/auth/selection.dart';
 import 'package:paynstay/bottome/mainscreen.dart';
+import 'package:paynstay/database/auth.dart';
 import 'package:paynstay/search/searchresturant.dart';
 import 'package:paynstay/userpages/profileinformation.dart';
 
@@ -36,9 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
             SignInButton(
               Buttons.Google,
               text: "Sign up with Google",
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (builder) => Selection()));
+              onPressed: () async {
+                await AuthUtils().signInWithGoogle();
+                await AuthUtils().socialLoginUser(context);
               },
             ),
             SizedBox(

@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  biometric_fingerprint: ^0.0.7
   carousel_slider: ^4.1.1
   cloud_firestore: ^3.4.8
   cupertino_icons: ^1.0.2
@@ -39,10 +40,13 @@ dependencies:
     sdk: flutter
   flutter_signin_button: ^2.0.0
   flutter_switch: ^0.3.2
+  fluttertoast: ^8.1.1
   google_fonts: ^3.0.1
   google_sign_in: ^5.4.1
   image_picker: ^0.8.5+3
+  local_auth: ^2.1.2
   material_design_icons_flutter: ^5.0.6996
+  toast: ^0.3.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

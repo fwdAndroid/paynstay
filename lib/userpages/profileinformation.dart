@@ -103,112 +103,99 @@ class _ProfileDetailState extends State<ProfileDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: true,
+        centerTitle: true,
+        title: Text(
+          'Profile Details',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 26),
+        ),
+      ),
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
-                  Container(
-                      child: Center(
-                          child: Text(
-                    'Profile Details',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 26),
-                  ))),
-                  Text('')
-                ],
-              ),
-              Center(
-                child: Stack(
-                  children: [
-                    _image != null
-                        ? CircleAvatar(
-                            radius: 59, backgroundImage: MemoryImage(_image!))
-                        : Image.asset(
-                            'assets/expert.png',
-                            height: 100,
-                            width: 200,
-                          ),
-                    Positioned(
-                      bottom: -10,
-                      left: 70,
-                      child: IconButton(
-                        onPressed: () => selectImage(),
-                        icon: Icon(
-                          Icons.add_a_photo,
-                          color: Colors.white,
-                        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Stack(
+              children: [
+                _image != null
+                    ? CircleAvatar(
+                        radius: 59, backgroundImage: MemoryImage(_image!))
+                    : Image.asset(
+                        'assets/expert.png',
+                        height: 100,
+                        width: 200,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              _titleText('Full Name'),
-              _textFormFieldFunctionIcon(
-                  nameController, (p0) => null, "Mathawe Wilson"),
-              _titleText('Email'),
-              _textFormFieldFunctionIcon(
-                  emailController, (p0) => null, "Email"),
-              _titleText('Date of Birth'),
-              Container(
-                padding: EdgeInsets.only(left: 5),
-                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1)),
-                child: DateTimePicker(
-                  controller: dobController,
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  dateLabelText: 'Date',
-                  onChanged: (val) => print(val),
-                  validator: (val) {
-                    print(val);
-                    return null;
-                  },
-                  onSaved: (val) => print(val),
-                ),
-              ),
-              _titleText('Phone Number'),
-              _textFormFieldFunctionIcon(
-                  phoneController, (p0) => null, "Phone Number"),
-              Container(
-                margin: EdgeInsets.only(top: 30),
-                child: Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shadowColor: Colors.black54,
-                      primary: Colors.black,
-                      fixedSize: Size(300, 55),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (builder) => LoginScreen()));
-                    },
-                    child: Text(
-                      'Create ',
-                      style: GoogleFonts.getFont('Roboto',
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                          fontSize: 15,
-                          fontStyle: FontStyle.normal),
+                Positioned(
+                  bottom: -10,
+                  left: 70,
+                  child: IconButton(
+                    onPressed: () => selectImage(),
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          _titleText('Full Name'),
+          _textFormFieldFunctionIcon(
+              nameController, (p0) => null, "Mathawe Wilson"),
+          _titleText('Email'),
+          _textFormFieldFunctionIcon(emailController, (p0) => null, "Email"),
+          _titleText('Date of Birth'),
+          Container(
+            padding: EdgeInsets.only(left: 5),
+            margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 1)),
+            child: DateTimePicker(
+              controller: dobController,
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2100),
+              dateLabelText: 'Date',
+              onChanged: (val) => print(val),
+              validator: (val) {
+                print(val);
+                return null;
+              },
+              onSaved: (val) => print(val),
+            ),
+          ),
+          _titleText('Phone Number'),
+          _textFormFieldFunctionIcon(
+              phoneController, (p0) => null, "Phone Number"),
+          Container(
+            margin: EdgeInsets.only(top: 30),
+            child: Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.black54,
+                  primary: Colors.black,
+                  fixedSize: Size(300, 55),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (builder) => LoginScreen()));
+                },
+                child: Text(
+                  'Create ',
+                  style: GoogleFonts.getFont('Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                      letterSpacing: 1.5,
+                      fontSize: 15,
+                      fontStyle: FontStyle.normal),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

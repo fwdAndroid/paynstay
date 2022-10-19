@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:paynstay/auth/selection.dart';
-import 'package:paynstay/bottome/mainscreen.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:paynstay/database/auth.dart';
-import 'package:paynstay/search/searchresturant.dart';
 import 'package:paynstay/userpages/profileinformation.dart';
+import 'package:toast/toast.dart';
+
+enum _SupportState {
+  unknown,
+  supported,
+  unsupported,
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,6 +20,62 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
+
+  bool _isAuthenticating = false;
+  String _authorized = 'Not Authorized';
+  _SupportState _supportState = _SupportState.unknown;
+
+  //Biometric functions
+  Future<void> _authenticateWithBiometrics() async {
+    bool authenticated = false;
+    try {
+      setState(() {
+        _isAuthenticating = true;
+        _authorized = 'Authenticating';
+      });
+      authenticated = await auth.authenticate(
+        localizedReason:
+            'Scan your fingerprint (or face or whatever) to authenticate',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      setState(() {
+        _isAuthenticating = false;
+        _authorized = 'Authenticating';
+        Navigator.push(
+            context, MaterialPageRoute(builder: (builder) => ProfileDetail()));
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      setState(() {
+        _isAuthenticating = false;
+        _authorized = 'Error - ${e.message}';
+      });
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
+    final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    setState(() {
+      _authorized = message;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    auth.isDeviceSupported().then(
+          (bool isSupported) => setState(() => _supportState = isSupported
+              ? _SupportState.supported
+              : _SupportState.unsupported),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,9 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 15,
             ),
             InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (builder) => ProfileDetail()));
+              onTap: () async {
+                await _authenticateWithBiometrics();
               },
               child: Image.asset(
                 'assets/finger.png',

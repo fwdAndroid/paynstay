@@ -185,7 +185,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                       primary: Colors.blue,
                       fixedSize: Size(300, 55),
                     ),
-                    onPressed: profile,
+                    onPressed: (){},
                     child: _isLoading
                         ? const CircularProgressIndicator(
                             color: Colors.white,
@@ -218,33 +218,33 @@ class _ProfileDetailState extends State<ProfileDetail> {
   // }
 
   ///ProfileDetails
-  profile() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String rse = await FirebaseDataBase().profileDetail(
-        email: emailController.text,
-        fullName: nameController.text,
-        dob: dobController.text,
-        // file: _image!,
-        phone: phoneController.text
-        // gender: dropdownvalue,
-        // uid: FirebaseAuth.instance.currentUser!.uid,
-        );
+  // profile() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   String rse = await FirebaseDataBase().profileDetail(
+  //       email: emailController.text,
+  //       fullName: nameController.text,
+  //       dob: dobController.text,
+  //       // file: _image!,
+  //       phone: phoneController.text
+  //       // gender: dropdownvalue,
+  //       // uid: FirebaseAuth.instance.currentUser!.uid,
+  //       );
 
-    print(rse);
-    setState(() {
-      _isLoading = false;
-    });
-    if (rse == 'success') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (builder) => MainScreen(),
-        ),
-      );
-    } else {
-      showSnakBar(rse, context);
-    }
-  }
+  //   print(rse);
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  //   if (rse == 'success') {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (builder) => MainScreen(),
+  //       ),
+  //     );
+  //   } else {
+  //     showSnakBar(rse, context);
+  //   }
+  // }
 }

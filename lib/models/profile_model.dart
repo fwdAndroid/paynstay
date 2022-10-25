@@ -3,15 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProfileModel {
   String fullName;
   String email;
-  String date;
+  String uid;
   String phoneNumber;
-  // String photoURL;
+  String photoURL;
 
   ProfileModel({
     required this.fullName,
     required this.email,
-    required this.date,
-    // required this.photoURL,
+    required this.uid,
+    required this.photoURL,
     required this.phoneNumber,
   });
 
@@ -20,8 +20,8 @@ class ProfileModel {
         'fullName': fullName,
         'email': email,
         'phoneNumber': phoneNumber,
-        // 'photoURL': photoURL,
-        'date': date,
+        'uid': uid,
+        'photoURL': photoURL
       };
 
   ///
@@ -29,11 +29,10 @@ class ProfileModel {
     var snapshot = snaps.data() as Map<String, dynamic>;
 
     return ProfileModel(
-      date: snapshot['date'],
-      fullName: snapshot['fullName'],
-      email: snapshot['email'],
-      // photoURL: snapshot['photoURL'],
-      phoneNumber: snapshot['phoneNumber'],
-    );
+        fullName: snapshot['fullName'],
+        email: snapshot['email'],
+        uid: snapshot['uid'],
+        phoneNumber: snapshot['phoneNumber'],
+        photoURL: snapshot['photoURL']);
   }
 }

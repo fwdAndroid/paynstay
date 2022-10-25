@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:paynstay/auth/email_auth.dart';
 import 'package:paynstay/database/auth.dart';
 import 'package:paynstay/userpages/profileinformation.dart';
 import 'package:toast/toast.dart';
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isAuthenticating = false;
         _authorized = 'Authenticating';
         Navigator.push(
-            context, MaterialPageRoute(builder: (builder) => ProfileDetail()));
+            context, MaterialPageRoute(builder: (builder) => EmailAuth()));
       });
     } on PlatformException catch (e) {
       print(e);

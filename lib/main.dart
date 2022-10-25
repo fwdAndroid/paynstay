@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:paynstay/auth/selection.dart';
+import 'package:paynstay/bottome/mainscreen.dart';
 import 'package:paynstay/introscreens/welcome.dart';
 
 Future<void> main() async {
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: FirebaseAuth.instance.currentUser == null ? Welcome() : Selection(),
+      home:
+          FirebaseAuth.instance.currentUser == null ? Welcome() : MainScreen(),
     );
   }
 }

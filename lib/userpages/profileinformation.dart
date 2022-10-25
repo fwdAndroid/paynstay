@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:paynstay/auth/loginscreen.dart';
+import 'package:paynstay/bottome/mainscreen.dart';
+import 'package:paynstay/database/database.dart';
 import 'package:paynstay/utils/utils.dart';
 
 class ProfileDetail extends StatefulWidget {
@@ -76,7 +79,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController dobController = TextEditingController();
-  Uint8List? _image;
+  // Uint8List? _image;
 
   //Looding Variable
   bool _isLoading = false;
@@ -103,108 +106,145 @@ class _ProfileDetailState extends State<ProfileDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: true,
-        centerTitle: true,
-        title: Text(
-          'Profile Details',
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 26),
-        ),
-      ),
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Stack(
-              children: [
-                _image != null
-                    ? CircleAvatar(
-                        radius: 59, backgroundImage: MemoryImage(_image!))
-                    : Image.asset(
-                        'assets/expert.png',
-                        height: 100,
-                        width: 200,
-                      ),
-                Positioned(
-                  bottom: -10,
-                  left: 70,
-                  child: IconButton(
-                    onPressed: () => selectImage(),
-                    icon: Icon(
-                      Icons.add_a_photo,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          _titleText('Full Name'),
-          _textFormFieldFunctionIcon(
-              nameController, (p0) => null, "Mathawe Wilson"),
-          _titleText('Email'),
-          _textFormFieldFunctionIcon(emailController, (p0) => null, "Email"),
-          _titleText('Date of Birth'),
-          Container(
-            padding: EdgeInsets.only(left: 5),
-            margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 1)),
-            child: DateTimePicker(
-              controller: dobController,
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100),
-              dateLabelText: 'Date',
-              onChanged: (val) => print(val),
-              validator: (val) {
-                print(val);
-                return null;
-              },
-              onSaved: (val) => print(val),
-            ),
-          ),
-          _titleText('Phone Number'),
-          _textFormFieldFunctionIcon(
-              phoneController, (p0) => null, "Phone Number"),
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            child: Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shadowColor: Colors.black54,
-                  primary: Colors.black,
-                  fixedSize: Size(300, 55),
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (builder) => LoginScreen()));
-                },
-                child: Text(
-                  'Create ',
-                  style: GoogleFonts.getFont('Roboto',
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      letterSpacing: 1.5,
-                      fontSize: 15,
-                      fontStyle: FontStyle.normal),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Center(
+                      child: Text(
+                    'Profile Details',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 36),
+                  ))),
+              // Center(
+              //   child: Stack(
+              //     children: [
+              //       _image != null
+              //           ? CircleAvatar(
+              //               radius: 59, backgroundImage: MemoryImage(_image!))
+              //           : Image.asset(
+              //               'assets/profile.png',
+              //               height: 100,
+              //               width: 200,
+              //             ),
+              //       Positioned(
+              //         bottom: -10,
+              //         left: 70,
+              //         child: IconButton(
+              //           onPressed: () => selectImage(),
+              //           icon: Icon(
+              //             Icons.add_a_photo,
+              //             color: Colors.white,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              _titleText('Full Name'),
+              _textFormFieldFunctionIcon(
+                  nameController, (p0) => null, "Mathawe Wilson"),
+              _titleText('Email'),
+              _textFormFieldFunctionIcon(
+                  emailController, (p0) => null, "Email"),
+              _titleText('Date of Birth'),
+              Container(
+                padding: EdgeInsets.only(left: 5),
+                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1)),
+                child: DateTimePicker(
+                  controller: dobController,
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2100),
+                  dateLabelText: 'Date',
+                  onChanged: (val) => print(val),
+                  validator: (val) {
+                    print(val);
+                    return null;
+                  },
+                  onSaved: (val) => print(val),
                 ),
               ),
-            ),
+            
+              _titleText('Phone Number'),
+              _textFormFieldFunctionIcon(
+                  phoneController, (p0) => null, "Phone Number"),
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.blueAccent,
+                      primary: Colors.blue,
+                      fixedSize: Size(300, 55),
+                    ),
+                    onPressed: profile,
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text(
+                            'Next ',
+                            style: GoogleFonts.getFont('Roboto',
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                                letterSpacing: 1.5,
+                                fontSize: 15,
+                                fontStyle: FontStyle.normal),
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  /// Select Image From Gallery
-  selectImage() async {
-    Uint8List ui = await pickImage(ImageSource.gallery);
+  // Select Image From Gallery
+  // selectImage() async {
+  //   Uint8List ui = await pickImage(ImageSource.gallery);
+  //   setState(() {
+  //     _image = ui;
+  //   });
+  // }
+
+  ///ProfileDetails
+  profile() async {
     setState(() {
-      _image = ui;
+      _isLoading = true;
     });
+    String rse = await FirebaseDataBase().profileDetail(
+        email: emailController.text,
+        fullName: nameController.text,
+        dob: dobController.text,
+        // file: _image!,
+        phone: phoneController.text
+        // gender: dropdownvalue,
+        // uid: FirebaseAuth.instance.currentUser!.uid,
+        );
+
+    print(rse);
+    setState(() {
+      _isLoading = false;
+    });
+    if (rse == 'success') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => MainScreen(),
+        ),
+      );
+    } else {
+      showSnakBar(rse, context);
+    }
   }
 }
